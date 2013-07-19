@@ -8,5 +8,6 @@
 <!--     </settings> -->
     <typeAliases>
         <typeAlias type="model.Attendance" alias="Attendance" />
+        <typeAlias type="model.User" alias="User" />
     </typeAliases>
 </configuration>

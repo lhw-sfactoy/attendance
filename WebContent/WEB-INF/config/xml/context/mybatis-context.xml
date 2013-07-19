@@ -51,4 +51,5 @@
     <bean id="attendanceService" class="service.AttendanceService">
 <!--         <property name="boardMapper" ref="boardMapper" /> -->
     </bean>
+    <bean id="userService" class="service.UserService"></bean>
 </beans>

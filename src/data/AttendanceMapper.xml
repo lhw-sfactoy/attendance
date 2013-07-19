@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="data.AttendanceMapper">
+    <select id="selectAttendance" resultType="Attendance">
+    select * from tb_attendance
+    </select>
+    
+    <insert id="insertOneAttendance" parameterType="Attendance" 
+            keyProperty="id" useGeneratedKeys="true">
+        insert into tb_attendance(
+            date, time, state
+            , msg, user_name, user_device_id
+        ) values (
+            #{date}, #{time}, #{state}
+            , #{msg}, #{userName}, #{userDeviceId}
+        )
+    </insert>
+</mapper>

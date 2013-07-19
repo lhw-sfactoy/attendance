@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="data.UserMapper">
+    <select id="selectOneUser" resultType="User" parameterType="User">
+    select device_id
+           , name 
+      from tb_user
+     where device_id = #{deviceId, jdbcType=VARCHAR}
+           and name = #{name, jdbcType=VARCHAR}
+    </select>
+    
+    <select id="selectCountUser" resultType="int" parameterType="User">
+    select count(1)
+      from tb_user
+     where device_id = #{deviceId, jdbcType=VARCHAR}
+           and name = #{name, jdbcType=VARCHAR}
+    </select>
+    
+    <insert id="insertOneUser" parameterType="User" keyProperty="id" useGeneratedKeys="true">
+    insert into tb_user(
+        device_id, name
+    ) values (
+        #{deviceId}, #{name}
+    )
+    </insert>
+</mapper>

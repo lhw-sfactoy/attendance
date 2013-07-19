@@ -6,6 +6,7 @@
                         http://www.springframework.org/schema/beans/spring-beans.xsd
                         http://www.springframework.org/schema/mvc
                         http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
+
     <mvc:annotation-driven />
     <!-- mybatis 설정 파일 로드 -->
     <import resource="../context/mybatis-context.xml" />
@@ -30,6 +31,10 @@
 <!--       <property name="characterEncoding" value="UTF-8" /> -->
 <!--     </bean> -->
 
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basename" value="/WEB-INF/config/properties/message/Message" /> 
+    </bean>
+
     <bean id="viewResolver" 
         class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/views" />
@@ -40,11 +45,13 @@
     <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
         <property name="messageConverters">
             <list>
+<!--                 <ref bean="stringHttpMessageConverter" /> -->
                 <ref bean="jsonConverter" />
-            <!-- <ref bean="marshallingConverter" /> <ref bean="atomConverter" /> -->
             </list>
         </property>
     </bean>
+    
+<!--     <bean id="stringHttpMessageConverter" class="org.springframework.http.converter.StringHttpMessageConverter" /> -->
 
     <bean id="jsonConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
         <property name="supportedMediaTypes" value="application/json" />
