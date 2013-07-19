@@ -169,8 +169,8 @@ public class ApplicationController
     {
         Map<String, Object> m = new HashMap<String, Object>();
         
-        String userDeviceId = requestBodyMap.get("userDeviceId")
-                , userName = requestBodyMap.get("userName")
+        String userDeviceId = requestBodyMap.get("deviceId")
+                , userName = requestBodyMap.get("name")
                 , wifiName = requestBodyMap.get("wifiName")
                 , wifiBssId = requestBodyMap.get("wifiBssId")
                 , state; //출근상태
@@ -202,11 +202,11 @@ public class ApplicationController
         Calendar currentCalendar = Calendar.getInstance()
                 , limitCalendar = (Calendar)currentCalendar.clone();
         
-        String dateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(currentCalendar.getTime());
+        String dateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(currentCalendar.getTime());
         String[] dateArr = dateTime.split(" ");
         String date = dateArr[0], time = dateArr[1];
         
-        limitCalendar.set(Calendar.HOUR, ATTENDANCE_HOUR_LIMIT);
+        limitCalendar.set(Calendar.HOUR_OF_DAY, ATTENDANCE_HOUR_LIMIT);
         limitCalendar.set(Calendar.MINUTE, ATTENDANCE_MINUTE_LIMIT);
         limitCalendar.set(Calendar.SECOND, ATTENDANCE_SECOND_LIMIT);
         
@@ -215,7 +215,6 @@ public class ApplicationController
             m.put(RESULT_CD_KEY, LATE_ATTENDANCE_CD);
             m.put(RESULT_MSG_KEY, this.messageSource.getMessage(MESSAGE_PATH
                     + LATE_ATTENDANCE_CD, null, Locale.KOREA));
-            //m.put(RESULT_MSG_KEY, "");
             state = "지각";
         }
         else
@@ -223,9 +222,10 @@ public class ApplicationController
             m.put(RESULT_CD_KEY, NORMAL_ATTENDANCE_CD);
             m.put(RESULT_MSG_KEY, this.messageSource.getMessage(MESSAGE_PATH
                     + NORMAL_ATTENDANCE_CD, null, Locale.KOREA));
-            //m.put(RESULT_MSG_KEY, "");
             state = "출근";
         }
+        
+        m.put("attRegTime", time);
         
         Attendance attendance = new Attendance();
         attendance
