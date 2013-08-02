@@ -1,2 +1,2 @@
 <%@page language="java" contentType="text/html; charset=utf-8" pageEncoding="UTF-8" %>
-${deviceId }
+${lAttendance[0].getTime() }

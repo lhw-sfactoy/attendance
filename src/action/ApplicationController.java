@@ -3,7 +3,6 @@ package action;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,7 +13,6 @@ import model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -25,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import service.IAttendanceService;
 import service.IUserService;
+import util.Message;
 
 @Controller
 @RequestMapping("/interface")
@@ -57,9 +56,7 @@ public class ApplicationController
     static final int ATTENDANCE_HOUR_LIMIT = 9;
     static final int ATTENDANCE_MINUTE_LIMIT = 0;
     static final int ATTENDANCE_SECOND_LIMIT = 0;
-    
-    @Autowired MessageSource messageSource;
-    
+        
     @Autowired IUserService userService;   
     @Autowired IAttendanceService attendanceService;
     
@@ -87,8 +84,7 @@ public class ApplicationController
         Map<String, Object> m = new HashMap<String, Object>();
         System.out.println(e.getMessage());
         m.put(RESULT_CD_KEY, SYSTEM_ERROR);
-        m.put(RESULT_MSG_KEY, this.messageSource.getMessage(MESSAGE_PATH
-                + SYSTEM_ERROR, null, Locale.KOREA));
+        m.put(RESULT_MSG_KEY, Message.get(MESSAGE_PATH + SYSTEM_ERROR));
         
         return m;
     }
@@ -140,23 +136,22 @@ public class ApplicationController
         if(this.isExistDevice(user)) //존재하는 경우
         {
             m.put(RESULT_CD_KEY, EXISTS_DEVICE_ID_CD);
-            m.put(RESULT_MSG_KEY, this.messageSource.getMessage(MESSAGE_PATH
-                    + EXISTS_DEVICE_ID_CD, null, Locale.KOREA));
+            m.put(RESULT_MSG_KEY, Message.get(MESSAGE_PATH
+                    + EXISTS_DEVICE_ID_CD));
         }
         else
         {
             userService.userInsert(user); //generate key는 instance에 삽입된다
             
             m.put(RESULT_CD_KEY, INSERT_DEVICE_ID_SUCCESS_CD);
-            m.put(RESULT_MSG_KEY, this.messageSource.getMessage(MESSAGE_PATH
-                    + INSERT_DEVICE_ID_SUCCESS_CD, null, Locale.KOREA));
+            m.put(RESULT_MSG_KEY, Message.get(MESSAGE_PATH + INSERT_DEVICE_ID_SUCCESS_CD));
         }
 
         return m;
     }
     
     /**
-     * 출근 체크
+     * 출근등록 요청
      * 
      * @param model
      * @param requestBodyMap
@@ -180,8 +175,7 @@ public class ApplicationController
         if(!this.isAllowAP(wifiName, wifiBssId)) //AP 인증 실패
         {
             m.put(RESULT_CD_KEY, FAIL_AP_CHECK_CD);
-            m.put(RESULT_MSG_KEY, this.messageSource.getMessage(MESSAGE_PATH
-                    + FAIL_AP_CHECK_CD, null, Locale.KOREA));
+            m.put(RESULT_MSG_KEY, Message.get(MESSAGE_PATH + FAIL_AP_CHECK_CD));
             return m;
         }
         
@@ -193,8 +187,7 @@ public class ApplicationController
         if(!this.isExistDevice(user)) //deviceId 없음
         {
             m.put(RESULT_CD_KEY, FAIL_DEVICE_CHECK_CD);
-            m.put(RESULT_MSG_KEY, this.messageSource.getMessage(MESSAGE_PATH
-                    + FAIL_DEVICE_CHECK_CD, null, Locale.KOREA));
+            m.put(RESULT_MSG_KEY, Message.get(MESSAGE_PATH + FAIL_DEVICE_CHECK_CD));
             return m;
         }
         
@@ -213,15 +206,13 @@ public class ApplicationController
         if(currentCalendar.after(limitCalendar)) //지각이면
         {
             m.put(RESULT_CD_KEY, LATE_ATTENDANCE_CD);
-            m.put(RESULT_MSG_KEY, this.messageSource.getMessage(MESSAGE_PATH
-                    + LATE_ATTENDANCE_CD, null, Locale.KOREA));
+            m.put(RESULT_MSG_KEY, Message.get(MESSAGE_PATH + LATE_ATTENDANCE_CD));
             state = "지각";
         }
         else
         {
             m.put(RESULT_CD_KEY, NORMAL_ATTENDANCE_CD);
-            m.put(RESULT_MSG_KEY, this.messageSource.getMessage(MESSAGE_PATH
-                    + NORMAL_ATTENDANCE_CD, null, Locale.KOREA));
+            m.put(RESULT_MSG_KEY, Message.get(MESSAGE_PATH + LATE_ATTENDANCE_CD));
             state = "출근";
         }
         

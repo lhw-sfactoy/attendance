@@ -14,32 +14,11 @@
     <bean id="baseController" class="action.MainController" />
     <bean id="attendanceController" class="action.AttendanceController" />
     <bean id="applicationController" class="action.ApplicationController" />
-
-<!--     <bean id="templateResolver"  -->
-<!--       class="org.thymeleaf.templateresolver.ServletContextTemplateResolver"> -->
-<!--       <property name="cacheable" value="false" /> -->
-<!--       <property name="prefix" value="/WEB-INF/" /> -->
-<!--       <property name="suffix" value=".html" /> -->
-<!--       <property name="templateMode" value="HTML5" /> -->
-<!--       <property name="characterEncoding" value="UTF-8" /> -->
-<!--     </bean> -->
-<!--     <bean id="templateEngine" class="org.thymeleaf.spring3.SpringTemplateEngine"> -->
-<!--       <property name="templateResolver" ref="templateResolver" /> -->
-<!--     </bean> -->
-<!--     <bean id="viewResolver" class="org.thymeleaf.spring3.view.ThymeleafViewResolver"> -->
-<!--       <property name="templateEngine" ref="templateEngine" /> -->
-<!--       <property name="characterEncoding" value="UTF-8" /> -->
-<!--     </bean> -->
-
+    
+    <bean class="util.Message" />
+    
     <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
         <property name="basename" value="/WEB-INF/config/properties/message/Message" /> 
-    </bean>
-
-    <bean id="viewResolver" 
-        class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="prefix" value="/WEB-INF/views" />
-        <property name="suffix" value=".jsp" />
-        <property name="order" value="2" />
     </bean>
     
     <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
@@ -55,6 +34,31 @@
 
     <bean id="jsonConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
         <property name="supportedMediaTypes" value="application/json" />
+    </bean>
+
+    <bean id="templateResolver" 
+      class="org.thymeleaf.templateresolver.ServletContextTemplateResolver">
+      <property name="cacheable" value="false" />
+      <property name="prefix" value="/WEB-INF/views" />
+      <property name="suffix" value=".html" />
+      <property name="templateMode" value="HTML5" />
+      <property name="characterEncoding" value="UTF-8" />     
+    </bean>
+    <bean id="templateEngine" class="org.thymeleaf.spring3.SpringTemplateEngine">
+      <property name="templateResolver" ref="templateResolver" />
+    </bean>
+    
+    <bean class="org.thymeleaf.spring3.view.ThymeleafViewResolver">
+      <property name="templateEngine" ref="templateEngine" />
+      <property name="characterEncoding" value="UTF-8" />
+      <property name="order" value="1" />
+    </bean>
+
+    <bean id="viewResolver" 
+        class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/views" />
+        <property name="suffix" value=".jsp" />
+        <property name="order" value="2" />
     </bean>
     
 <!--     <bean id="viewResolver" -->

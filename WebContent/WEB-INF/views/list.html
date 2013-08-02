@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  <title>Insert title here</title>
+</head>
+<body>
+  <table th:with="li = 1, rows = 5">
+    <tr th:with="cols = ${li * 7}" 
+        th:each="li : ${#numbers.sequence(li, rows)}" 
+        th:attr="data-value=${li}">
+      <td th:each="li : ${#numbers.sequence(cols - 6, cols)}" th:text="${li}"></td>
+    </tr>
+  </table>
+
+<!--   <ul th:object="${lAttendance[0]}"> -->
+<!--     <li th:text="*{getTime()}"></li> -->
+<!--   </ul> -->
+<!--   <input type="text" th:attr="data-value=${lAttendance[0].getTime()}"/> -->
+</body>
+</html>
