@@ -3,16 +3,52 @@
 <head>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
   <title>Insert title here</title>
+  <link rel="stylesheet" media="all" th:href="@{/css/style.css }" />
 </head>
-<body>
-  <table th:with="li = 1, rows = 5">
-    <tr th:with="cols = ${li * 7}" 
-        th:each="li : ${#numbers.sequence(li, rows)}" 
-        th:attr="data-value=${li}">
-      <td th:each="li : ${#numbers.sequence(cols - 6, cols)}" th:text="${li}"></td>
-    </tr>
+<body th:with="thisyear = ${#calendars.year(viewCalendar) }
+               , thismonth = ${#calendars.month(viewCalendar) }
+               , now = ${#calendars.createNow() }">
+  <div id="calendarView">
+    <a class="button"
+        th:href="@{'/attendance/list/' 
+            + ${deviceId }(searchDate=${thisyear + '-' + (thismonth - 1) }) }">&lt;</a>
+    <span class="date" th:text="${thisyear + '년 ' + thismonth + '월' }"></span>
+    <a class="button" th:href="@{'/attendance/list/' 
+            + ${deviceId }(searchDate=${thisyear + '-' + (thismonth + 1) }) }">&gt;</a>
+  </div>
+  <table id="calendar">
+    <caption class="blind">달력</caption>
+    <thead>
+      <tr>
+        <th class="holiday">일</th>
+        <th>월</th>
+        <th>화</th>
+        <th>수</th>
+        <th>목</th>
+        <th>금</th>
+        <th>토</th>
+      </tr>
+    </thead>
+    <tbody th:with="li = 1, rows = 5
+                    , startIndex = ${#calendars.dayOfWeek(viewCalendar) }
+                    , todate = ${#calendars.format(now, #messages.msg('dateformat.dateshort')) }">
+      <tr th:with="cols = ${li * 7}" th:each="li : ${#numbers.sequence(li, rows) }">
+        <td th:with="thisday = ${li + 1 - startIndex }
+                     , thisdate = ${thisyear + '' + thismonth + '' + (li + 1 - startIndex) }"
+            th:each="li : ${#numbers.sequence(cols - 6, cols) }" 
+            th:class="${(li - 1) % 7 == 0 ? 'holiday' 
+                                          : todate == thisdate ? 'today' : '' }">
+          <span th:text="${li >= startIndex ? thisday : '' }"></span>
+          <div class="schedule">test</div>
+        </td>
+      </tr>
+    </tbody>
   </table>
-
+  <ul style="margin:10px 0" >
+    <li>출근 : </li>
+    <li>지각 : </li>
+    <li>휴가 : </li>
+  </ul>
 <!--   <ul th:object="${lAttendance[0]}"> -->
 <!--     <li th:text="*{getTime()}"></li> -->
 <!--   </ul> -->

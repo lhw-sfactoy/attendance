@@ -2,14 +2,22 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="data.AttendanceMapper">
     <select id="selectAttendance" resultType="Attendance" parameterType="String">
-        select * 
+        select date_format(date, '%Y%c%e') date, time, msg, create_date
           from tb_attendance
         <where>
             (#{0, jdbcType=VARCHAR} IS NULL OR user_device_id = #{0, jdbcType=VARCHAR})
             AND (#{1, jdbcType=VARCHAR} IS NULL OR date like CONCAT(#{1, jdbcType=VARCHAR}, '%')) 
         </where>
     </select>
-    
+    <select id="selectGroupStateCountByAttendance" resultType="Attendance" parameterType="String">
+        select state, count(1) row_count 
+          from tb_attendance 
+        <where>
+               (#{0, jdbcType=VARCHAR} IS NULL OR user_device_id = #{0, jdbcType=VARCHAR})
+               AND (#{1, jdbcType=VARCHAR} IS NULL OR date like CONCAT(#{1, jdbcType=VARCHAR}, '%')) 
+        </where>  
+      group by state
+    </select>
     <insert id="insertOneAttendance" parameterType="Attendance" 
             keyProperty="id" useGeneratedKeys="true">
         insert into tb_attendance(

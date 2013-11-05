@@ -51,7 +51,7 @@ public class ApplicationController
     static final int FAIL_AP_CHECK_CD = 400;
     
     static final String WIFI_NAME = "SFWLAN";
-    static final String WIFI_BSS_ID = "0:8:9f:b:a7:4";
+    static final String WIFI_BSS_ID = "00:08:9f:0b:a7:04";
     
     static final int ATTENDANCE_HOUR_LIMIT = 9;
     static final int ATTENDANCE_MINUTE_LIMIT = 0;
@@ -171,6 +171,8 @@ public class ApplicationController
                 , state; //출근상태
         
         //TODO 필드 유효성 검사 해야함
+        
+        System.out.println(wifiBssId);
         
         if(!this.isAllowAP(wifiName, wifiBssId)) //AP 인증 실패
         {
